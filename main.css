@@ -1,0 +1,112 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+body {
+	font-family: system-ui, sans-serif;
+	font-size: 1.2em;
+	color: #222;
+	background: #FFF;
+
+	@media screen and (max-width: 680px) {
+		font-size: 0.8em;
+	}
+}
+
+header {
+	background: #DDD;
+	border-bottom: 2px solid #BBB;
+	text-align: center;
+	padding: 1.2em 0.8em 0.8em 0.8em;
+
+	input, button {
+		border: 2px solid rgba(1, 1, 1, 0.2);
+		font-size: 1.2em;
+		border-radius: 4px;
+	}
+
+	input {
+		border: 2px solid rgba(1, 1, 1, 0.5);
+		min-width: 14em;
+		padding: 0.2em;
+
+		@media screen and (max-width: 680px) {
+			display: block;
+			margin: auto;
+			margin-bottom: 0.4em;
+		}
+	}
+
+	button {
+		padding: 0.2em 1.2em;
+		cursor: pointer;
+		user-select: none;
+	}
+
+	button#goButton {
+		background: rgba(0, 255, 0, 0.2);
+		background: linear-gradient(0deg, rgba(238,255,238,1) 0%, rgba(160,200,160,1) 100%);
+	}
+
+	.readMore {
+		margin: 0;
+		padding-top: 0.4em;
+	}
+
+	#counter {
+		margin: 0;
+		padding-top: 0.4em;
+	}
+}
+
+#content {
+	box-sizing: border-box;
+	max-width: 800px;
+	margin: auto;
+	padding: 1.2em;
+	background: #FFF;
+	min-height: 100vh;
+}
+
+#skeetContainer {
+	.skeetItem {
+		margin: 1.2em 0;
+		box-shadow: 0 2px 6px rgba(1, 1, 1, 0.2);
+		border-radius: 8px;
+		padding: 1em 1.2em;
+
+		.skeetText {
+			font-size: 110%;
+			font-family: ui-serif, serif;
+			line-height: 1.4;
+			margin-bottom: 0.4em;
+
+			a {
+				color: #333;
+				text-decoration: none;
+			}
+		}
+
+		.skeetUsername {
+			text-align: right;
+
+			a {
+				padding-left: 0.4em;
+			}
+		}
+	}
+}
+
+footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 2em;
+	background: #DDD;
+	text-align: center;
+	border-top: 2px solid #CCC;
+	padding: 1.2em;
+}
