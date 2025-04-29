@@ -39,6 +39,7 @@ const formatAccountDetails = (verificationsList) => {
 		<tr class="account">
 			<td class="name">${item.value.displayName}</td>
 			<td class="handle"><a href="https://bsky.app/profile/${item.value.handle}" target="_blank">${item.value.handle}</a></td>
+			<td class="date">${item.value.createdAt}</td>
 		</tr>
 		`;
 	});
@@ -91,13 +92,23 @@ const checkAccount = () => {
 			const verifications = await getVerifications(did, pdsURL);
 			const verificationsCursor = verifications.cursor;
 
+			// Save these details for later in case I need to load more
+			bskyState = {
+				'did': did,
+				'pdsURL': pdsURL
+			};
+
 			// Write out what we found
 			let list = document.createElement('table');
 			list.classList.add('accountList');
-			list.innerHTML += `<thead><tr><th>Display Name</th><th>Handle</th></tr></thead>`;
+			list.innerHTML += `<thead><tr><th>Display Name</th><th>Handle</th><th>Date Verified</th></tr></thead>`;
 			list.innerHTML += await formatAccountDetails(verifications.records);
 			document.querySelector('#content main').appendChild(list);
 
+			// Add load more button if we've got 50
+			if (verifications.records.length === 50) {
+				// add loading button here
+			}
 		} else {
 			addError(`The account ${accountText} exists, but isn't a verifier.`);
 		}

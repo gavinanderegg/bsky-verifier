@@ -58,7 +58,7 @@ header {
 
 #content {
 	box-sizing: border-box;
-	max-width: 800px;
+	max-width: 1000px;
 	margin: auto;
 	padding: 1.2em;
 	background: #FFF;
@@ -70,10 +70,13 @@ header {
 		}
 
 		.accountList {
+			width: 100%;
+
+			td {
+				padding: 0.2em 0.1em;
+			}
+
 			.account {
-				.name {
-					padding-right: 2em;
-				}
 				.label {
 					font-weight: 600;
 				}
