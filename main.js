@@ -91,9 +91,6 @@ const checkAccount = () => {
 			const verifications = await getVerifications(did, pdsURL);
 			const verificationsCursor = verifications.cursor;
 
-			// console.log(verifications.records);
-			// console.log(typeof(verifications.records));
-
 			// Write out what we found
 			let list = document.createElement('table');
 			list.classList.add('accountList');
@@ -108,9 +105,6 @@ const checkAccount = () => {
 		addError(`Caught rejection: ${error}`);
 	});
 }
-
-
-
 
 
 document.querySelector('#accountInput').addEventListener('keypress', (e) => {
