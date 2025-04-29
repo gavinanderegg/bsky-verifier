@@ -15,7 +15,7 @@ const getPDS = async (did) => {
 const getVerifications = async (did, pds) => {
 	// TODO: loop over this using the cursor:
 	// https://docs.bsky.app/docs/tutorials/viewing-feeds#viewing-a-users-timeline
-	const pdsURL = `${pds}/xrpc/com.atproto.repo.listRecords?repo=${did}&collection=app.bsky.graph.verification&limit=100`;
+	const pdsURL = `${pds}/xrpc/com.atproto.repo.listRecords?repo=${did}&collection=app.bsky.graph.verification&limit=50`;
 
 	const response = await fetch(encodeURI(pdsURL));
 
