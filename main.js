@@ -1,3 +1,6 @@
+let bskyState = {};
+
+
 const getPDS = async (did) => {
 	const directoryURL = `https://plc.directory/${did}`;
 
@@ -28,6 +31,30 @@ const getVerifications = async (did, pds) => {
 }
 
 
+const formatAccountDetails = (verificationsList) => {
+	let accountsString = '';
+
+	verificationsList.forEach((item) => {
+		accountsString += `
+		<tr class="account">
+			<td class="name">${item.value.displayName}</td>
+			<td class="handle"><a href="https://bsky.app/profile/${item.value.handle}" target="_blank">${item.value.handle}</a></td>
+		</tr>
+		`;
+	});
+
+	return accountsString;
+}
+
+
+const addError = (errorText) => {
+	let errorMessage = document.createElement('div');
+	errorMessage.classList.add('error');
+	errorMessage.textContent = errorText;
+	document.querySelector('#content main').appendChild(errorMessage);
+}
+
+
 const checkAccount = () => {
 	let accountText = document.querySelector('#accountInput').value;
 
@@ -50,6 +77,8 @@ const checkAccount = () => {
 
 		if (data.verification?.trustedVerifierStatus !== undefined) {
 			const did = data.did;
+
+			// TODO: Maybe list who verified this account and when
 			const verifiedBy = data.verification.verifications;
 
 			// Now let's get the PDS that the account lives on
@@ -60,23 +89,28 @@ const checkAccount = () => {
 
 			// Let's ask the PDS what verification objects it has for the account
 			const verifications = await getVerifications(did, pdsURL);
+			const verificationsCursor = verifications.cursor;
+
+			// console.log(verifications.records);
+			// console.log(typeof(verifications.records));
 
 			// Write out what we found
-			console.log(verifications.records);
+			let list = document.createElement('table');
+			list.classList.add('accountList');
+			list.innerHTML += `<thead><tr><th>Display Name</th><th>Handle</th></tr></thead>`;
+			list.innerHTML += await formatAccountDetails(verifications.records);
+			document.querySelector('#content main').appendChild(list);
 
 		} else {
 			addError(`The account ${accountText} exists, but isn't a verifier.`);
 		}
+	}).catch((error) => {
+		addError(`Caught rejection: ${error}`);
 	});
 }
 
 
-const addError = (errorText) => {
-	let errorMessage = document.createElement('div');
-	errorMessage.classList.add('error');
-	errorMessage.textContent = errorText;
-	document.querySelector('#content main').appendChild(errorMessage);
-}
+
 
 
 document.querySelector('#accountInput').addEventListener('keypress', (e) => {
