@@ -15,10 +15,12 @@ const getPDS = async (did) => {
 }
 
 
-const getVerifications = async (did, pds) => {
-	// TODO: loop over this using the cursor:
-	// https://docs.bsky.app/docs/tutorials/viewing-feeds#viewing-a-users-timeline
+const getVerifications = async (did, pds, cursor = null) => {
 	const pdsURL = `${pds}/xrpc/com.atproto.repo.listRecords?repo=${did}&collection=app.bsky.graph.verification&limit=50`;
+
+	if (cursor) {
+		pdsURL += `&cursor=${cursor}`;
+	}
 
 	const response = await fetch(encodeURI(pdsURL));
 
@@ -56,6 +58,27 @@ const addError = (errorText) => {
 }
 
 
+const addLoadButton = (cursor) => {
+	let loadButton = document.createElement('div');
+	loadButton.id = 'loadMore';
+	loadButton.dataset.cursor = cursor;
+	loadButton.innerHTML += 'Load More';
+	document.querySelector('#content main').appendChild(loadButton);
+}
+
+
+const addListItems = async (verifications) => {
+	let list = document.querySelector('#verificationsTable');
+
+	list.innerHTML += await formatAccountDetails(verifications.records);
+
+	// // Add load more button if we've got 50
+	if (verifications.records.length === 50) {
+		addLoadButton(verifications.cursor);
+	}
+}
+
+
 const checkAccount = () => {
 	let accountText = document.querySelector('#accountInput').value;
 
@@ -90,7 +113,6 @@ const checkAccount = () => {
 
 			// Let's ask the PDS what verification objects it has for the account
 			const verifications = await getVerifications(did, pdsURL);
-			const verificationsCursor = verifications.cursor;
 
 			// Save these details for later in case I need to load more
 			bskyState = {
@@ -98,17 +120,15 @@ const checkAccount = () => {
 				'pdsURL': pdsURL
 			};
 
-			// Write out what we found
+			// table to contain things
 			let list = document.createElement('table');
+			list.id = 'verificationsTable';
 			list.classList.add('accountList');
 			list.innerHTML += `<thead><tr><th>Display Name</th><th>Handle</th><th>Date Verified</th></tr></thead>`;
-			list.innerHTML += await formatAccountDetails(verifications.records);
 			document.querySelector('#content main').appendChild(list);
 
-			// Add load more button if we've got 50
-			if (verifications.records.length === 50) {
-				// add loading button here
-			}
+			// Write out what we found
+			addListItems(verifications);
 		} else {
 			addError(`The account ${accountText} exists, but isn't a verifier.`);
 		}
@@ -127,4 +147,17 @@ document.querySelector('#accountInput').addEventListener('keypress', (e) => {
 
 document.querySelector('#goButton').addEventListener('click', (e) => {
 	checkAccount();
+});
+
+
+document.addEventListener('click', async (e) => {
+	if (e.target.id === 'loadMore') {
+		const cursor = e.target.attributes['data-cursor'].value;
+
+		e.target.remove();
+
+		let verifications = await getVerifications(bskyState.did, bskyState.pdsURL, cursor);
+
+		addListItems(verifications);
+	}
 });

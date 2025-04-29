@@ -82,48 +82,18 @@ header {
 				}
 			}
 		}
-	}
-}
 
-
-
-#skeetContainer {
-	.skeetItem {
-		margin: 1.2em 0;
-		box-shadow: 0 2px 6px rgba(1, 1, 1, 0.2);
-		border-radius: 8px;
-		padding: 1em 1.2em;
-
-		.skeetText {
-			font-size: 110%;
-			font-family: ui-serif, serif;
-			line-height: 1.4;
-			margin-bottom: 0.4em;
-
-			a {
-				color: #333;
-				text-decoration: none;
-			}
-		}
-
-		.skeetUsername {
-			text-align: right;
-
-			a {
-				padding-left: 0.4em;
-			}
+		#loadMore {
+			display: block;
+			width: fit-content;
+			margin: 2em auto;
+			padding: 0.4em 1.2em;
+			border: 2px solid rgba(1, 1, 1, 0.2);
+			color: #116;
+			border-radius: 4px;
+			cursor: pointer;
+			user-select: none;
+			background: rgba(0, 0, 255, 0.2);
 		}
 	}
-}
-
-footer {
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	height: 2em;
-	background: #DDD;
-	text-align: center;
-	border-top: 2px solid #CCC;
-	padding: 1.2em;
 }
