@@ -16,7 +16,7 @@ const getPDS = async (did) => {
 
 
 const getVerifications = async (did, pds, cursor = null) => {
-	let pdsURL = `${pds}/xrpc/com.atproto.repo.listRecords?repo=${did}&collection=app.bsky.graph.verification&limit=50`;
+	let pdsURL = `${pds}/xrpc/com.atproto.repo.listRecords?repo=${did}&collection=app.bsky.graph.verification&limit=100`;
 
 	if (cursor) {
 		pdsURL += `&cursor=${cursor}`;
