@@ -16,13 +16,13 @@ const getPDS = async (did) => {
 
 
 const getVerifications = async (did, pds, cursor = null) => {
-	const pdsURL = `${pds}/xrpc/com.atproto.repo.listRecords?repo=${did}&collection=app.bsky.graph.verification&limit=50`;
+	let pdsURL = `${pds}/xrpc/com.atproto.repo.listRecords?repo=${did}&collection=app.bsky.graph.verification&limit=50`;
 
 	if (cursor) {
 		pdsURL += `&cursor=${cursor}`;
 	}
 
-	const response = await fetch(encodeURI(pdsURL));
+	let response = await fetch(encodeURI(pdsURL));
 
 	if (!response.ok) {
 		addError(`Error querying the PDS.`);
@@ -63,7 +63,7 @@ const addLoadButton = (cursor) => {
 	loadButton.id = 'loadMore';
 	loadButton.dataset.cursor = cursor;
 	loadButton.innerHTML += 'Load More';
-	document.querySelector('#content main').appendChild(loadButton);
+	document.querySelector('#content #loadMoreContainer').appendChild(loadButton);
 }
 
 
@@ -72,7 +72,7 @@ const addListItems = async (verifications) => {
 
 	list.innerHTML += await formatAccountDetails(verifications.records);
 
-	// // Add load more button if we've got 50
+	// Add load more button if we've got 50
 	if (verifications.records.length === 50) {
 		addLoadButton(verifications.cursor);
 	}
@@ -120,11 +120,11 @@ const checkAccount = () => {
 				'pdsURL': pdsURL
 			};
 
-			// table to contain things
+			// Table to contain things (shut up, I'm old and this is tabular data)
 			let list = document.createElement('table');
 			list.id = 'verificationsTable';
 			list.classList.add('accountList');
-			list.innerHTML += `<thead><tr><th>Display Name</th><th>Handle</th><th>Date Verified</th></tr></thead>`;
+			list.innerHTML += `<thead><tr><th class="name">Display Name</th><th class="handle">Handle</th><th class="date">Date Verified</th></tr></thead>`;
 			document.querySelector('#content main').appendChild(list);
 
 			// Write out what we found
@@ -156,8 +156,8 @@ document.addEventListener('click', async (e) => {
 
 		e.target.remove();
 
-		let verifications = await getVerifications(bskyState.did, bskyState.pdsURL, cursor);
+		let newVerifications = await getVerifications(bskyState.did, bskyState.pdsURL, cursor);
 
-		addListItems(verifications);
+		addListItems(newVerifications);
 	}
 });

@@ -62,7 +62,6 @@ header {
 	margin: auto;
 	padding: 1.2em;
 	background: #FFF;
-	min-height: 100vh;
 
 	main {
 		.error {
@@ -71,9 +70,29 @@ header {
 
 		.accountList {
 			width: 100%;
+			margin-top: 1em;
+			border-collapse: collapse;
+
+			th {
+				padding: 0.4em 0;
+				border-bottom: 1px solid #999;
+			}
+
+			th.handle, td.handle {
+				width: 33%;
+			}
+
+			th.name {
+				text-align: left;
+			}
+
+			th.date, td.date {
+				text-align: right;
+			}
 
 			td {
 				padding: 0.2em 0.1em;
+				font-variant-numeric: tabular-nums;
 			}
 
 			.account {
@@ -82,18 +101,18 @@ header {
 				}
 			}
 		}
-
-		#loadMore {
-			display: block;
-			width: fit-content;
-			margin: 2em auto;
-			padding: 0.4em 1.2em;
-			border: 2px solid rgba(1, 1, 1, 0.2);
-			color: #116;
-			border-radius: 4px;
-			cursor: pointer;
-			user-select: none;
-			background: rgba(0, 0, 255, 0.2);
-		}
 	}
+}
+
+#loadMore {
+	display: block;
+	width: fit-content;
+	margin: 2em auto;
+	padding: 0.4em 1.2em;
+	border: 2px solid rgba(1, 1, 1, 0.2);
+	color: #116;
+	border-radius: 4px;
+	cursor: pointer;
+	user-select: none;
+	background: rgba(0, 0, 255, 0.2);
 }
