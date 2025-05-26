@@ -73,7 +73,7 @@ const addListItems = async (verifications) => {
 	list.innerHTML += await formatAccountDetails(verifications.records);
 
 	// Add load more button if we've got 50
-	if (verifications.records.length === 50) {
+	if (verifications.records.length === 100) {
 		addLoadButton(verifications.cursor);
 	}
 }
