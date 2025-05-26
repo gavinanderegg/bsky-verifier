@@ -1,10 +1,11 @@
 let bskyState = {};
+const limit = 100;
 
 
 const getPDS = async (did) => {
-	const directoryURL = `https://plc.directory/${did}`;
+	let directoryURL = `https://plc.directory/${did}`;
 
-	const response = await fetch(directoryURL);
+	let response = await fetch(directoryURL);
 
 	if (!response.ok) {
 		addError(`Error when reaching out to the PLC Directory.`);
@@ -16,7 +17,7 @@ const getPDS = async (did) => {
 
 
 const getVerifications = async (did, pds, cursor = null) => {
-	let pdsURL = `${pds}/xrpc/com.atproto.repo.listRecords?repo=${did}&collection=app.bsky.graph.verification&limit=100`;
+	let pdsURL = `${pds}/xrpc/com.atproto.repo.listRecords?repo=${did}&collection=app.bsky.graph.verification&limit=${limit}`;
 
 	if (cursor) {
 		pdsURL += `&cursor=${cursor}`;
@@ -73,7 +74,7 @@ const addListItems = async (verifications) => {
 	list.innerHTML += await formatAccountDetails(verifications.records);
 
 	// Add load more button if we've got 50
-	if (verifications.records.length === 100) {
+	if (verifications.records.length === limit) {
 		addLoadButton(verifications.cursor);
 	}
 }
@@ -88,8 +89,13 @@ const checkAccount = () => {
 	// Clear any messages we added previously
 	document.querySelector('#content main').replaceChildren();
 
+	// Clear the "Load More" button, if it's there
+	if (document.querySelector('#loadMore')) {
+		document.querySelector('#loadMore').remove();
+	}
+
 	// First, let's check if this account exists and is a verifier
-	const getProfileURL = `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${accountText}`;
+	let getProfileURL = `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${accountText}`;
 
 	fetch(getProfileURL).then(async (response) => {
 		if (!response.ok) {
@@ -97,22 +103,22 @@ const checkAccount = () => {
 			return;
 		}
 
-		const data = await response.json();
+		let data = await response.json();
 
 		if (data.verification?.trustedVerifierStatus !== undefined) {
-			const did = data.did;
+			let did = data.did;
 
 			// TODO: Maybe list who verified this account and when
-			const verifiedBy = data.verification.verifications;
+			let verifiedBy = data.verification.verifications;
 
 			// Now let's get the PDS that the account lives on
-			const pds = await getPDS(did);
+			let pds = await getPDS(did);
 
 			// TODO: look into why `service` is an array, and what it would mean if there were more than one
-			const pdsURL = pds.service[0].serviceEndpoint;
+			let pdsURL = pds.service[0].serviceEndpoint;
 
 			// Let's ask the PDS what verification objects it has for the account
-			const verifications = await getVerifications(did, pdsURL);
+			let verifications = await getVerifications(did, pdsURL);
 
 			// Save these details for later in case I need to load more
 			bskyState = {
@@ -152,7 +158,7 @@ document.querySelector('#goButton').addEventListener('click', (e) => {
 
 document.addEventListener('click', async (e) => {
 	if (e.target.id === 'loadMore') {
-		const cursor = e.target.attributes['data-cursor'].value;
+		let cursor = e.target.attributes['data-cursor'].value;
 
 		e.target.remove();
 
