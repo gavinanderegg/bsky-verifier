@@ -78,7 +78,7 @@ header {
 				border-bottom: 1px solid #999;
 			}
 
-			th.handle, td.handle {
+			th.handle, td.handle, th.date, td.date {
 				width: 33%;
 			}
 
