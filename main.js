@@ -108,7 +108,6 @@ const checkAccount = () => {
 		if (data.verification?.trustedVerifierStatus !== undefined) {
 			let did = data.did;
 
-			// TODO: Maybe list who verified this account and when
 			let verifiedBy = data.verification.verifications;
 
 			// Now let's get the PDS that the account lives on
