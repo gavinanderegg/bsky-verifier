@@ -83,8 +83,9 @@ const addListItems = async (verifications) => {
 const checkAccount = () => {
 	let accountText = document.querySelector('#accountInput').value;
 
-	// Remove any '@'s
+	// Remove any '@'s and make lower case
 	accountText = accountText.replace('@', '');
+	accountText = accountText.toLowerCase();
 
 	// Clear any messages we added previously
 	document.querySelector('#content main').replaceChildren();
